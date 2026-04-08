@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>VectorCore Advisors — Client Dashboards</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f8fa;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 20px;
+    }
+
+    .logo {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 8px;
+    }
+
+    h1 {
+      font-size: 26px;
+      font-weight: 600;
+      color: #1a1a1a;
+      margin-bottom: 6px;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #999;
+      margin-bottom: 40px;
+    }
+
+    #client-list {
+      width: 100%;
+      max-width: 520px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .client-card {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: white;
+      border: 1px solid #e8e8e8;
+      border-radius: 10px;
+      padding: 16px 20px;
+      text-decoration: none;
+      color: #1a1a1a;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    .client-card:hover {
+      border-color: #bbb;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+
+    .client-name {
+      font-size: 15px;
+      font-weight: 500;
+    }
+
+    .arrow {
+      color: #ccc;
+      font-size: 18px;
+    }
+
+    .loading {
+      color: #aaa;
+      font-size: 14px;
+      margin-top: 20px;
+    }
+
+    .error {
+      color: #c0392b;
+      font-size: 13px;
+      background: #fdf0ee;
+      border: 1px solid #f5c6c2;
+      border-radius: 8px;
+      padding: 12px 16px;
+      max-width: 520px;
+      width: 100%;
+    }
+
+    footer {
+      margin-top: 60px;
+      font-size: 12px;
+      color: #ccc;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo">VectorCore Advisors</div>
+  <h1>Client Dashboards</h1>
+  <p class="subtitle">Select a client to view their dashboard</p>
+
+  <div id="client-list">
+    <p class="loading">Loading clients...</p>
+  </div>
+
+  <footer>vectorcoreadvisors.github.io</footer>
+
+  <script>
+    // ↓ Change these two values to match your GitHub username and repo name
+    const GITHUB_USER = 'vectorcoreadvisors';
+    const GITHUB_REPO = 'dashboards';
+
+    const list = document.getElementById('client-list');
+
+    async function loadClients() {
+      try {
+        const url = `https://api.github.com/repos/${GITHUB_USER}/${GITHUB_REPO}/contents/`;
+        const res = await fetch(url);
+
+        if (!res.ok) throw new Error('Could not reach GitHub API');
+
+        const items = await res.json();
+
+        // Only show folders (type === 'dir'), skip hidden folders like .github
+        const clients = items.filter(item =>
+          item.type === 'dir' && !item.name.startsWith('.')
+        );
+
+        if (clients.length === 0) {
+          list.innerHTML = '<p class="loading">No client folders found yet.</p>';
+          return;
+        }
+
+        list.innerHTML = '';
+        clients.forEach(client => {
+          const a = document.createElement('a');
+          a.className = 'client-card';
+          a.href = `./${client.name}/`;
+          a.innerHTML = `
+            <span class="client-name">${client.name.replace(/_/g, ' ')}</span>
+            <span class="arrow">›</span>
+          `;
+          list.appendChild(a);
+        });
+
+      } catch (err) {
+        list.innerHTML = `<div class="error">Could not load client list. Make sure the repo is public and the GitHub username/repo name at the top of this file are correct.<br><br>${err.message}</div>`;
+      }
+    }
+
+    loadClients();
+  </script>
+
+</body>
+</html>
