@@ -250,8 +250,8 @@
 // ════════════════════════════════════════════════════════════
 //  ✏️  CHANGE THESE 2 LINES FOR EACH CLIENT — NOTHING ELSE
 // ════════════════════════════════════════════════════════════
-var CLIENT_NAME   = "Jeremy K";
-var SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSwTTuI8ljjHRrmfMFhHdXeKIiouviS6GpuN3qYgDnuq7vYWSF81xsKBgi0-k523I-W6kdcGxZaBI_Q/pub?gid=730747852&single=true&output=csv";
+var CLIENT_NAME   = "Enter Client Name Here";
+var SHEET_CSV_URL = "Paste Csv Here";
 //
 // HOW TO GET YOUR CSV LINK:
 //   1. Open the client's Google Sheet
@@ -399,26 +399,93 @@ function drawDscrGauge(dscrVal){
   c.style.cssText='width:100%;height:100%;display:block;';
   parent.appendChild(c);
   setTimeout(function(){
-    var w=parent.offsetWidth||180, h=parent.offsetHeight||160;
+    var w=parent.offsetWidth||180, h=parent.offsetHeight||150;
     var dpr=window.devicePixelRatio||1;
     c.width=w*dpr; c.height=h*dpr;
     c.style.width=w+'px'; c.style.height=h+'px';
     var ctx=c.getContext('2d'); ctx.scale(dpr,dpr);
     var PI=Math.PI;
-    var cx=w/2, cy=h*0.62;
-    var r=Math.min(w*0.38, cy*0.82);
-    var arcW=Math.max(7, r*0.13);
+
+    // Center the arc pivot at ~70% down so the full semicircle fits
+    var cx=w/2, cy=h*0.70;
+    // Radius fills most of the width with a bit of padding
+    var r=Math.min(w*0.42, cy*0.90);
+    var arcW=Math.max(9, r*0.14);
+
+    // Arc spans from 180° (left) to 360°/0° (right) — a standard half-circle
     var angStart=PI, angEnd=2*PI;
-    var angSafe=PI+0.75*PI;
-    function toAngle(v){var pct=(v-1.0)*1.0+0.50;pct=Math.max(0,Math.min(1,pct));return angStart+pct*PI;}
-    ctx.beginPath();ctx.arc(cx,cy,r,angStart,angEnd);ctx.lineWidth=arcW;ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineCap='butt';ctx.stroke();
-    ctx.beginPath();ctx.arc(cx,cy,r,angSafe,angEnd);ctx.lineWidth=arcW;ctx.strokeStyle='#22dd88';ctx.lineCap='butt';ctx.stroke();
+
+    // 1.25x maps to ~75% of the way across the arc
+    // Range: 1.0x = 0%, 1.5x = 100%  → 1.25x = 50% = PI*1.5
+    function toAngle(v){
+      var pct=(v-1.0)/0.5; // 1.0→0, 1.5→1
+      pct=Math.max(0,Math.min(1,pct));
+      return angStart+pct*PI;
+    }
+    var angSafe=toAngle(1.25); // angle where green zone starts
+
+    // Draw the full dim arc (background track)
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,angStart,angEnd);
+    ctx.lineWidth=arcW;
+    ctx.strokeStyle='rgba(255,255,255,0.15)';
+    ctx.lineCap='butt';
+    ctx.stroke();
+
+    // Draw the green safe zone arc from 1.25x to end
+    ctx.beginPath();
+    ctx.arc(cx,cy,r,angSafe,angEnd);
+    ctx.lineWidth=arcW;
+    ctx.strokeStyle='#22dd88';
+    ctx.lineCap='butt';
+    ctx.stroke();
+
+    // Red tick mark at 1.0x (danger threshold) — short line on the arc
+    var angDanger=toAngle(1.0);
+    var tickOuter=r+arcW*0.5, tickInner=r-arcW*0.5;
+    ctx.beginPath();
+    ctx.moveTo(cx+Math.cos(angDanger)*tickInner, cy+Math.sin(angDanger)*tickInner);
+    ctx.lineTo(cx+Math.cos(angDanger)*tickOuter, cy+Math.sin(angDanger)*tickOuter);
+    ctx.lineWidth=2;
+    ctx.strokeStyle='#ff4444';
+    ctx.stroke();
+
+    // Needle
     var needleA=toAngle(dscrVal);
-    ctx.save();ctx.translate(cx,cy);ctx.rotate(needleA);ctx.beginPath();ctx.moveTo(-5,0);ctx.lineTo(r*0.80,0);ctx.lineWidth=2.5;ctx.strokeStyle='#fff';ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(0,0,4,0,2*PI);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
-    ctx.textAlign='center';ctx.font='bold 20px Inter';ctx.fillStyle='#fff';ctx.fillText(dscrVal.toFixed(2)+'x',cx,cy+r*0.45);
-    ctx.font='bold 7px Inter';
-    var lbl125X=cx+Math.cos(angSafe)*(r+arcW+8), lbl125Y=cy+Math.sin(angSafe)*(r+arcW+8);
-    ctx.fillStyle='#22dd88';ctx.fillText('1.25x',lbl125X,lbl125Y);
+    var needleLen=r*0.78;
+    ctx.save();
+    ctx.translate(cx,cy);
+    ctx.rotate(needleA);
+    ctx.beginPath();
+    ctx.moveTo(-6,0);
+    ctx.lineTo(needleLen,0);
+    ctx.lineWidth=2.5;
+    ctx.strokeStyle='#ffffff';
+    ctx.lineCap='round';
+    ctx.stroke();
+    ctx.restore();
+
+    // Center hub circle
+    ctx.beginPath();
+    ctx.arc(cx,cy,5,0,2*PI);
+    ctx.fillStyle='#ffffff';
+    ctx.fill();
+
+    // Main value label below center
+    ctx.textAlign='center';
+    ctx.font='bold 22px Inter,sans-serif';
+    ctx.fillStyle='#ffffff';
+    ctx.fillText(dscrVal.toFixed(2)+'x', cx, cy+r*0.42);
+
+    // 1.25x green label — positioned just past the green arc start, above the arc
+    var lblAngle=angSafe-0.18; // slightly before the green start for clean positioning
+    var lblR=r+arcW+10;
+    var lbl125X=cx+Math.cos(lblAngle)*lblR;
+    var lbl125Y=cy+Math.sin(lblAngle)*lblR;
+    ctx.font='bold 8px Inter,sans-serif';
+    ctx.fillStyle='#22dd88';
+    ctx.textAlign='center';
+    ctx.fillText('1.25x', lbl125X, lbl125Y);
   },50);
 }
 
