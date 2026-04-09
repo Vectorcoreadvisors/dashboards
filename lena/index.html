@@ -1,4 +1,15 @@
 <!DOCTYPE html>
+<!-- ╔══════════════════════════════════════════════════════════════╗ -->
+<!-- ║        ✏️  CLIENT SETUP — EDIT THESE 2 LINES ONLY           ║ -->
+<!-- ╠══════════════════════════════════════════════════════════════╣ -->
+<!-- ║  Lena N : Display name shown in the dashboard header   ║ -->
+<!-- ║  https://docs.google.com/spreadsheets/d/e/2PACX-1vQixiPvEaAhOK0cxIfySsZT8hcJcmWklMIwdUqv-m7xG1RrQS8wx3M7J6DP0RCu7bY7nQMzV1qJuuZk/pub?gid=1072341547&single=true&output=csv  : Your Google Apps Script deployment URL       ║ -->
+<!-- ╚══════════════════════════════════════════════════════════════╝ -->
+<script>
+  var CLIENT_NAME = "Enter Client Name Here";
+  var SCRIPT_URL  = "Paste_Google_Apps_Script_URL_Here";
+</script>
+<!-- ══════════════════════════════════════════════════════════════ -->
 <html>
 <head>
 <style>
@@ -118,8 +129,6 @@
   @keyframes spin{to{transform:rotate(360deg)}}
   .loader-text{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:1px;}
   #error-banner{display:none;background:#2a0a0a;border:1px solid #ff5555;border-radius:8px;padding:10px 14px;font-size:11px;color:#ff8888;margin-bottom:12px;}
-
-
 </style>
 </head>
 <body>
@@ -131,38 +140,37 @@
 
 <div id="error-banner"></div>
 
-
 <div class="section-label" id="kpi-section-label">KEY PERFORMANCE INDICATORS</div>
 <div class="kpi-grid">
   <div class="kpi-card kpi-card-noi">
     <div class="kpi-top"><div class="kpi-icon">$</div><div class="kpi-label">NET OPERATING INCOME</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-noi">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill on-track" id="pill-noi">-- ON TRACK</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-noi">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill on-track" id="pill-noi">-- ON TRACK</span></div>
   </div>
   <div class="kpi-card kpi-card-dscr">
     <div class="kpi-top"><div class="kpi-icon">&#9830;</div><div class="kpi-label">DEBT SVC COVERAGE</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-dscr">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill on-track" id="pill-dscr">-- ON TRACK</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-dscr">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill on-track" id="pill-dscr">-- ON TRACK</span></div>
   </div>
   <div class="kpi-card kpi-card-occ">
     <div class="kpi-top"><div class="kpi-icon">&#127970;</div><div class="kpi-label">PORTFOLIO OCCUPANCY</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-occ">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill achieved" id="pill-occ">&#10003; ACHIEVED</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-occ">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill achieved" id="pill-occ">&#10003; ACHIEVED</span></div>
   </div>
   <div class="kpi-card kpi-card-cash">
     <div class="kpi-top"><div class="kpi-icon">&#128200;</div><div class="kpi-label">OPERATING CASH FLOW</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-cash">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill achieved" id="pill-cash">&#10003; ACHIEVED</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-cash">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill achieved" id="pill-cash">&#10003; ACHIEVED</span></div>
   </div>
   <div class="kpi-card kpi-card-rev">
     <div class="kpi-top"><div class="kpi-icon">$</div><div class="kpi-label">GROSS REVENUE</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-rev">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill on-track" id="pill-rev">-- ON TRACK</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-rev">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill on-track" id="pill-rev">-- ON TRACK</span></div>
   </div>
   <div class="kpi-card kpi-card-net">
     <div class="kpi-top"><div class="kpi-icon">$</div><div class="kpi-label">NET INCOME</div></div>
-    <div class="kpi-projected">ACTUAL: <b id="py-net">--</b></div>
-    <div class="kpi-goal-row">VS TARGET &nbsp;<span class="kpi-pill on-track" id="pill-net">-- ON TRACK</span></div>
+    <div class="kpi-projected">PROJECTED YE: <b id="py-net">--</b></div>
+    <div class="kpi-goal-row">DISTANCE TO YE GOAL &nbsp;<span class="kpi-pill on-track" id="pill-net">-- ON TRACK</span></div>
   </div>
 </div>
 
@@ -173,32 +181,32 @@
 <div class="gauge-grid">
   <div class="gauge-card gauge-card-noi">
     <div class="gauge-top"><div class="gauge-icon">$</div><div class="gauge-label">NOI</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-noi">--</div><div class="gauge-qoq pos" id="gb-noi">--<div class="gauge-qoq-label">vs Budget</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-noi">--</div><div class="gauge-qoq pos" id="gb-noi">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,14 C40,4 80,24 120,14 C160,4 200,24 240,14 C270,6 285,20 300,14 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
   <div class="gauge-card gauge-card-dscr">
     <div class="gauge-top"><div class="gauge-icon">&#9830;</div><div class="gauge-label">DSCR</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-dscr">--</div><div class="gauge-qoq" id="gb-dscr">--<div class="gauge-qoq-label">vs 1.25x</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-dscr">--</div><div class="gauge-qoq" id="gb-dscr">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,18 C50,8 100,26 150,16 C200,6 250,22 300,14 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
   <div class="gauge-card gauge-card-occ">
     <div class="gauge-top"><div class="gauge-icon">&#127970;</div><div class="gauge-label">OCCUPANCY</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-occ">--</div><div class="gauge-qoq pos" id="gb-occ">--<div class="gauge-qoq-label">vs 95%</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-occ">--</div><div class="gauge-qoq pos" id="gb-occ">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,10 C60,22 120,6 180,18 C220,26 260,10 300,16 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
   <div class="gauge-card gauge-card-cash">
     <div class="gauge-top"><div class="gauge-icon">&#128200;</div><div class="gauge-label">CASH FLOW</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-cash">--</div><div class="gauge-qoq pos" id="gb-cash">--<div class="gauge-qoq-label">vs Budget</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-cash">--</div><div class="gauge-qoq pos" id="gb-cash">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,16 C50,6 100,24 160,12 C210,2 260,20 300,12 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
   <div class="gauge-card gauge-card-rev">
     <div class="gauge-top"><div class="gauge-icon">$</div><div class="gauge-label">GROSS REVENUE</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-rev">--</div><div class="gauge-qoq pos" id="gb-rev">--<div class="gauge-qoq-label">vs Budget</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-rev">--</div><div class="gauge-qoq pos" id="gb-rev">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,12 C70,24 140,6 200,20 C240,28 275,12 300,18 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
   <div class="gauge-card gauge-card-net">
     <div class="gauge-top"><div class="gauge-icon">$</div><div class="gauge-label">NET INCOME</div></div>
-    <div class="gauge-main-row"><div class="gauge-value" id="g-net">--</div><div class="gauge-qoq pos" id="gb-net">--<div class="gauge-qoq-label">vs Budget</div></div></div>
+    <div class="gauge-main-row"><div class="gauge-value" id="g-net">--</div><div class="gauge-qoq pos" id="gb-net">--<div class="gauge-qoq-label">QoQ</div></div></div>
     <div class="gauge-wave"><svg viewBox="0 0 300 30" preserveAspectRatio="none"><path d="M0,20 C40,10 90,26 150,14 C200,4 255,22 300,14 L300,30 L0,30 Z" fill="rgba(0,0,0,0.2)"/></svg></div>
   </div>
 </div>
@@ -210,12 +218,12 @@
   <div class="chart-box gc-orange"><div class="chart-label">Occupancy — 12 Months</div>    <div class="chart-inner"><canvas id="occChart"></canvas></div></div>
   <div class="chart-box gc-teal">  <div class="chart-label">Cash Flow — 12 Months</div>    <div class="chart-inner"><canvas id="cashChart"></canvas></div></div>
   <div class="chart-box gc-blue">  <div class="chart-label">Gross Revenue — 12 Months</div><div class="chart-inner"><canvas id="revChart"></canvas></div></div>
-  <div class="chart-box gc-lime">  <div class="chart-label">Net Income (Q)</div>            <div class="chart-inner"><canvas id="netChart"></canvas></div></div>
+  <div class="chart-box gc-lime">  <div class="chart-label">Net Income — 12 Months</div>   <div class="chart-inner"><canvas id="netChart"></canvas></div></div>
 </div>
 
-<div class="section-label">MONTHLY PERFORMANCE</div>
+<div class="section-label">PROPERTY SNAPSHOT</div>
 <table id="p-table">
-  <thead><tr><th>MONTH</th><th>GROSS RENT</th><th>VACANCY</th><th>EGI</th><th>OP EXP</th><th>NOI</th><th>DEBT SVC</th><th>CASH FLOW</th><th>OCCUPANCY</th><th>DSCR</th></tr></thead>
+  <thead><tr><th>PROPERTY</th><th>OCCUPANCY</th><th>NOI</th><th>DSCR</th><th>RENT</th><th>CASH FLOW</th><th>CAP RATE</th><th>STATUS</th></tr></thead>
   <tbody></tbody>
 </table>
 
@@ -247,96 +255,58 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
 <script>
 
-// ════════════════════════════════════════════════════════════
-//  ✏️  CHANGE THESE 2 LINES FOR EACH CLIENT — NOTHING ELSE
-// ════════════════════════════════════════════════════════════
-var CLIENT_NAME   = "Lena Nazaruk";
-var SHEET_CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQixiPvEaAhOK0cxIfySsZT8hcJcmWklMIwdUqv-m7xG1RrQS8wx3M7J6DP0RCu7bY7nQMzV1qJuuZk/pub?gid=1072341547&single=true&output=csv";
-//
-// HOW TO GET YOUR CSV LINK:
-//   1. Open the client's Google Sheet
-//   2. File → Share → Publish to web
-//   3. Select the "🚀 DISPATCH" sheet tab, format = CSV
-//   4. Click Publish, copy the link, paste it above
-//
-// The DISPATCH sheet must have this column layout (rows 12-24):
-//   Col B: MONTH | Col C: GROSS RENT | Col D: VACANCY | Col E: EGI
-//   Col F: OP EXP | Col G: NOI | Col H: DEBT SVC | Col I: CASH FLOW
-//   Col J: OCCUPANCY | Col K: DSCR
-//
-// KPI summary rows 3-9 (Col B = metric name, Col C = actual, Col D = budget):
-//   Row 4: NOI | Row 5: DSCR | Row 6: OCCUPANCY | Row 7: CASH FLOW
-//   Row 8: GROSS REV | Row 9: NET INCOME
-// ════════════════════════════════════════════════════════════
+// (CLIENT_NAME and SCRIPT_URL are set at the very top of this file)
 
 var charts = {};
 var tickStyle = {color:'rgba(255,255,255,0.75)',font:{size:7}};
 var gridStyle = {color:'rgba(255,255,255,0.07)'};
 
-function n(v){ return parseFloat(String(v||'0').replace(/[$,%x\s]/g,''))||0; }
-function fmtK(v){ return '$'+Math.round(Math.abs(v)/1000)+'K'; }
-function fmtDollar(v){ return '$'+Math.round(Math.abs(v)).toLocaleString(); }
-
-// Parse CSV text → array of arrays
-function parseCSV(text){
-  var rows=[];
-  var lines=text.trim().split('\n');
-  lines.forEach(function(line){
-    var cols=[], cur='', inQ=false;
-    for(var i=0;i<line.length;i++){
-      var ch=line[i];
-      if(ch==='"'){ inQ=!inQ; }
-      else if(ch===','&&!inQ){ cols.push(cur.trim()); cur=''; }
-      else { cur+=ch; }
-    }
-    cols.push(cur.trim());
-    rows.push(cols);
-  });
-  return rows;
+function parseNum(str){
+  if(typeof str==='number') return str;
+  return parseFloat(String(str).replace(/[$,%x\s]/g,''))||0;
 }
 
-function applyVsBadge(elId, actual, budget, suffix){
-  var el=document.getElementById(elId);
+function applyQoQ(elId, rawVal){
+  var el = document.getElementById(elId);
   if(!el) return;
-  var diff=actual-budget;
-  var pct=budget!==0?(diff/Math.abs(budget)*100):0;
-  var isPos=diff>=0;
-  var arrow=isPos?'▲':'▼';
-  el.innerHTML=arrow+' '+(isPos?'+':'')+pct.toFixed(1)+'%<div class="gauge-qoq-label">'+(suffix||'vs Budget')+'</div>';
-  el.className='gauge-qoq '+(isPos?'pos':'neg');
+  var str = String(rawVal||'--').trim();
+  var isNeg = str.startsWith('-');
+  var arrow = isNeg ? '\u25bc' : '\u25b2';
+  el.innerHTML = arrow+' '+str+'<div class="gauge-qoq-label">QoQ</div>';
+  el.className = 'gauge-qoq '+(isNeg?'neg':'pos');
 }
 
-function applyPill(elId, actual, budget){
-  var el=document.getElementById(elId);
-  if(!el||budget===0) return;
-  var pct=(actual/budget)*100;
-  var cls,label;
-  if(pct>=100){cls='achieved';label='✓ 100% ACHIEVED';}
-  else if(pct>=85){cls='on-track';label='▲ '+pct.toFixed(0)+'% ON TRACK';}
+function applyPill(elId, pctOfGoal){
+  var el = document.getElementById(elId);
+  if(!el) return;
+  var pct = parseFloat(pctOfGoal)||0;
+  var cls, label;
+  if(pct>=100){cls='achieved';label='\u2713 100% ACHIEVED';}
+  else if(pct>=85){cls='on-track';label='\u25b2 '+pct.toFixed(0)+'% ON TRACK';}
   else if(pct>=70){cls='watch';label='! '+pct.toFixed(0)+'% WATCH';}
-  else{cls='behind';label='▼ '+pct.toFixed(0)+'% BEHIND';}
+  else{cls='behind';label='\u25bc '+pct.toFixed(0)+'% BEHIND';}
   el.className='kpi-pill '+cls;
   el.innerText=label;
 }
 
-function buildAbvSection(kpis, budgets){
+function buildAbvSection(data){
   var container=document.getElementById('abv-container');
   container.innerHTML='';
   var labels=['NOI','DSCR','OCCUPANCY','CASH FLOW','GROSS REV','NET INCOME'];
-  var actuals=[kpis.noi,kpis.dscr,kpis.occ,kpis.cash,kpis.rev,kpis.net];
-  var bdgs=[budgets.noi,budgets.dscr,budgets.occ,budgets.cash,budgets.rev,budgets.net];
+  var actuals=[parseNum(data.kpis.noi),parseNum(data.kpis.dscr),parseFloat(data.kpis.occ),parseNum(data.kpis.cash),parseNum(data.kpis.rev),parseNum(data.kpis.net)];
+  var budgets=[data.budgets.noi,data.budgets.dscr,data.budgets.occ,data.budgets.cash,data.budgets.rev,data.budgets.net];
   var isCurr=[true,false,false,true,true,true];
   var suffixes=['','x','%','','',''];
   var decs=[0,2,1,0,0,0];
   labels.forEach(function(label,i){
-    var actual=actuals[i],budget=bdgs[i];
+    var actual=actuals[i],budget=budgets[i];
     var varDol=actual-budget;
     var varPct=budget!==0?((actual-budget)/Math.abs(budget)*100):0;
     var isPos=varDol>=0;
     var pct=budget!==0?Math.min(100,Math.abs(actual/budget)*100):0;
     var barClr=isPos?'#22dd88':'#ff5555';
     function fmt(v){if(isCurr[i])return'$'+Math.abs(Math.round(v)).toLocaleString();return Math.abs(v).toFixed(decs[i])+suffixes[i];}
-    var varLabel=(isPos?'▲ +':'▼ ')+fmt(varDol)+' ('+(isPos?'+':'')+varPct.toFixed(1)+'%)';
+    var varLabel=(isPos?'\u25b2 +':'\u25bc ')+fmt(varDol)+' ('+(isPos?'+':'')+varPct.toFixed(1)+'%)';
     var card=document.createElement('div');
     card.className='abv-card';
     card.innerHTML='<div class="abv-title">'+label+'</div><div class="abv-rows"><div class="abv-row"><span class="abv-label">Actual</span><span class="abv-val abv-actual">'+fmt(actual)+'</span></div><div class="abv-row"><span class="abv-label">Budget</span><span class="abv-val abv-budget">'+fmt(budget)+'</span></div><div class="abv-divider"></div><div class="abv-row"><span class="abv-label">Var</span><span class="abv-val '+(isPos?'abv-var-pos':'abv-var-neg')+'">'+varLabel+'</span></div></div><div class="abv-bar-wrap"><div class="abv-bar-fill" style="width:'+pct+'%;background:'+barClr+';"></div></div>';
@@ -344,52 +314,24 @@ function buildAbvSection(kpis, budgets){
   });
 }
 
-function buildInsights(kpis, budgets, monthly){
-  // Glossary
+function buildInsights(data){
   var glossEl=document.getElementById('si-glossary');
-  var glossary=[
-    {term:'NOI',defn:'Net Operating Income — revenue minus operating expenses, before debt service.'},
-    {term:'DSCR',defn:'Debt Service Coverage Ratio — NOI divided by annual debt payments. Must stay above 1.25x per covenant.'},
-    {term:'EGI',defn:'Effective Gross Income — gross rent minus vacancy loss. The actual rent collected.'},
-    {term:'Cap Rate',defn:'Capitalization Rate — NOI divided by property value. Measures investment yield.'}
-  ];
   glossEl.innerHTML='';
-  glossary.forEach(function(g){glossEl.innerHTML+='<div class="gloss-term"><div class="gloss-term-name">'+g.term+'</div><div class="gloss-term-def">'+g.defn+'</div></div>';});
-
-  // Big picture summary
+  (data.glossary||[]).forEach(function(g){glossEl.innerHTML+='<div class="gloss-term"><div class="gloss-term-name">'+g.term+'</div><div class="gloss-term-def">'+g.defn+'</div></div>';});
   var summEl=document.getElementById('si-summary');
   summEl.innerHTML='';
-  var dscrVal=kpis.dscr;
-  var occVal=kpis.occ*100;
+  var dscrVal=parseNum(data.kpis.dscr);
+  var occVal=parseFloat(String(data.kpis.occ||'').replace('%',''))||0;
   var health=dscrVal>=1.25&&occVal>=90?'green':dscrVal>=1.0&&occVal>=80?'yellow':'red';
   var healthLabel=health==='green'?'Portfolio On Track':health==='yellow'?'Monitor Closely':'Attention Required';
-  summEl.innerHTML='<div class="status-pill pill-'+health+'"><span class="pill-dot"></span>'+healthLabel+'</div>';
-
-  var noiBudgetDiff = kpis.noi - budgets.noi;
-  var revBudgetDiff = kpis.rev - budgets.rev;
-  var points=[
-    {flag: noiBudgetDiff >= 0 ? 'NOTE' : 'MONITOR', topic:'NOI vs Budget', detail: 'NOI is '+fmtDollar(Math.abs(noiBudgetDiff))+(noiBudgetDiff>=0?' above':' below')+' budget target of '+fmtDollar(budgets.noi)+'.'},
-    {flag: dscrVal >= 1.25 ? 'NOTE' : 'MONITOR', topic:'DSCR Covenant', detail:'Current DSCR of '+dscrVal.toFixed(2)+'x is '+(dscrVal>=1.25?'above':'BELOW')+' the 1.25x minimum covenant requirement.'},
-    {flag: occVal >= 95 ? 'NOTE' : 'MONITOR', topic:'Occupancy', detail:'Portfolio occupancy at '+occVal.toFixed(1)+'% vs 95% target.'}
-  ];
-  points.forEach(function(bp){
+  summEl.innerHTML+='<div class="status-pill pill-'+health+'"><span class="pill-dot"></span>'+healthLabel+'</div>';
+  (data.bigPicture||[]).forEach(function(bp){
     var flagClass=bp.flag.toLowerCase().includes('monitor')?'monitor':'note';
     summEl.innerHTML+='<div class="bp-item"><div class="bp-topic"><span class="bp-flag '+flagClass+'">'+bp.flag+'</span> '+bp.topic+'</div><div class="bp-detail">'+bp.detail+'</div></div>';
   });
-
-  // Action items
   var actEl=document.getElementById('si-actions');
   actEl.innerHTML='';
-  var actions=[];
-  if(dscrVal<1.25) actions.push('DSCR is below covenant minimum of 1.25x — review debt service options and NOI growth plan.');
-  if(occVal<90)    actions.push('Occupancy below 90% — evaluate leasing strategy and vacancy reduction initiatives.');
-  if(kpis.noi < budgets.noi) actions.push('NOI is tracking below budget — identify top expense variances for cost reduction.');
-  if(actions.length===0){
-    actions.push('All key metrics are on track. Continue monitoring DSCR headroom.');
-    actions.push('Review Q-over-Q trends for any emerging variance from budget.');
-    actions.push('Confirm next debt service payment date and cash flow adequacy.');
-  }
-  actions.forEach(function(a,i){actEl.innerHTML+='<div class="action-item"><div class="action-num">'+(i+1)+'</div><div class="action-text">'+a+'</div></div>';});
+  (data.actions||[]).forEach(function(a){actEl.innerHTML+='<div class="action-item"><div class="action-num">'+a.num+'</div><div class="action-text">'+a.action+'</div></div>';});
 }
 
 function drawDscrGauge(dscrVal){
@@ -409,170 +351,93 @@ function drawDscrGauge(dscrVal){
     var r=Math.min(w*0.38, cy*0.82);
     var arcW=Math.max(7, r*0.13);
     var angStart=PI, angEnd=2*PI;
+    var angDanger=PI+0.50*PI;
     var angSafe=PI+0.75*PI;
     function toAngle(v){var pct=(v-1.0)*1.0+0.50;pct=Math.max(0,Math.min(1,pct));return angStart+pct*PI;}
     ctx.beginPath();ctx.arc(cx,cy,r,angStart,angEnd);ctx.lineWidth=arcW;ctx.strokeStyle='rgba(255,255,255,0.12)';ctx.lineCap='butt';ctx.stroke();
     ctx.beginPath();ctx.arc(cx,cy,r,angSafe,angEnd);ctx.lineWidth=arcW;ctx.strokeStyle='#22dd88';ctx.lineCap='butt';ctx.stroke();
+    var tickInner=r-arcW*0.45, tickOuter=r+arcW*0.45;
+    ctx.beginPath();ctx.moveTo(cx+Math.cos(angDanger)*tickInner,cy+Math.sin(angDanger)*tickInner);ctx.lineTo(cx+Math.cos(angDanger)*tickOuter,cy+Math.sin(angDanger)*tickOuter);ctx.lineWidth=2.5;ctx.strokeStyle='#ff4040';ctx.lineCap='round';ctx.stroke();
     var needleA=toAngle(dscrVal);
     ctx.save();ctx.translate(cx,cy);ctx.rotate(needleA);ctx.beginPath();ctx.moveTo(-5,0);ctx.lineTo(r*0.80,0);ctx.lineWidth=2.5;ctx.strokeStyle='#fff';ctx.lineCap='round';ctx.stroke();ctx.beginPath();ctx.arc(0,0,4,0,2*PI);ctx.fillStyle='#fff';ctx.fill();ctx.restore();
     ctx.textAlign='center';ctx.font='bold 20px Inter';ctx.fillStyle='#fff';ctx.fillText(dscrVal.toFixed(2)+'x',cx,cy+r*0.45);
-    ctx.font='bold 7px Inter';
+    ctx.font='bold 7px Inter';ctx.textAlign='center';
+    var lbl10X=cx+Math.cos(angDanger)*(r+arcW+8), lbl10Y=cy+Math.sin(angDanger)*(r+arcW+8);
+    ctx.fillStyle='#ff6060';ctx.fillText('1.0x',lbl10X,lbl10Y);
     var lbl125X=cx+Math.cos(angSafe)*(r+arcW+8), lbl125Y=cy+Math.sin(angSafe)*(r+arcW+8);
     ctx.fillStyle='#22dd88';ctx.fillText('1.25x',lbl125X,lbl125Y);
   },50);
 }
 
-function buildCharts(monthly, kpis){
+function buildCharts(data){
   Object.keys(charts).forEach(function(k){try{charts[k].destroy();}catch(e){}});
   charts={};
-  var months=monthly.map(function(r){return r.month;});
-  var noiVals=monthly.map(function(r){return r.noi;});
-  var occVals=monthly.map(function(r){return r.occ*100;});
-  var cashVals=monthly.map(function(r){return r.cash;});
-  var revVals=monthly.map(function(r){return r.rent;});
-  var wfLabels=['Gross Rent','Vacancy','Op Exp','NOI'];
-  var lastRow=monthly[monthly.length-1]||{};
-  var wfVals=[lastRow.rent||0,-(lastRow.vacancy||0),-(lastRow.opexp||0),lastRow.noi||0];
-  charts.wf=new Chart(document.getElementById('wfChart'),{type:'bar',data:{labels:wfLabels,datasets:[{data:wfVals,backgroundColor:'rgba(240,200,60,0.9)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle,grid:gridStyle},y:{ticks:{callback:fmtK},grid:gridStyle}}}});
-  drawDscrGauge(kpis.dscr);
-  charts.occ=new Chart(document.getElementById('occChart'),{type:'line',data:{labels:months,datasets:[{data:occVals,borderColor:'#fff',tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:function(v){return v.toFixed(0)+'%';}}}}}});
-  charts.cash=new Chart(document.getElementById('cashChart'),{type:'bar',data:{labels:months,datasets:[{data:cashVals,backgroundColor:'rgba(255,255,255,0.2)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
-  charts.rev=new Chart(document.getElementById('revChart'),{type:'line',data:{labels:months,datasets:[{data:revVals,borderColor:'#fff',tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
-  var noiQ=[0,0,0,0];
-  monthly.forEach(function(r,i){var q=Math.floor(i/3);if(q<4)noiQ[q]+=r.noi;});
-  charts.net=new Chart(document.getElementById('netChart'),{type:'bar',data:{labels:['Q1','Q2','Q3','Q4'],datasets:[{data:noiQ,backgroundColor:'rgba(160,220,60,0.6)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
+  function fmtK(v){return'$'+Math.round(Math.abs(v)/1000)+'k';}
+  charts.wf=new Chart(document.getElementById('wfChart'),{type:'bar',data:{labels:data.waterfall.labels,datasets:[{data:data.waterfall.values,backgroundColor:'rgba(240,200,60,0.9)',borderRadius:3}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle,grid:gridStyle},y:{ticks:{callback:fmtK},grid:gridStyle}}}});
+  drawDscrGauge(parseNum(data.kpis.dscr));
+  charts.occ=new Chart(document.getElementById('occChart'),{type:'line',data:{labels:data.trends.months,datasets:[{data:data.trends.occTrend,borderColor:'#fff',tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:function(v){return v+'%';}}}}}});
+  charts.cash=new Chart(document.getElementById('cashChart'),{type:'bar',data:{labels:data.trends.months,datasets:[{data:data.trends.cashTrend,backgroundColor:'rgba(255,255,255,0.2)'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
+  charts.rev=new Chart(document.getElementById('revChart'),{type:'line',data:{labels:data.dataEngine.months,datasets:[{data:data.dataEngine.revActual,borderColor:'#fff',tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
+  charts.net=new Chart(document.getElementById('netChart'),{type:'line',data:{labels:data.dataEngine.months,datasets:[{data:data.dataEngine.netTrend,borderColor:'#a0dc3c',tension:0.4,pointRadius:2}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{ticks:tickStyle},y:{ticks:{callback:fmtK}}}}});
 }
 
-function buildMonthlyTable(monthly){
+function renderDashboard(data){
+  if(!data || data.error){
+    var banner=document.getElementById('error-banner');
+    banner.style.display='block';
+    banner.innerText='⚠ Data error: '+(data?data.error:'No response from server');
+    document.getElementById('loading-overlay').classList.add('hidden');
+    return;
+  }
+  var q=data.quarter||"Q4 '24";
+  document.getElementById('kpi-section-label').innerText='KEY PERFORMANCE INDICATORS \u2014 '+CLIENT_NAME+' '+q;
+  var keys=['noi','dscr','occ','cash','rev','net'];
+  keys.forEach(function(k){
+    var pyEl=document.getElementById('py-'+k);
+    if(pyEl) pyEl.innerText=(data.projected&&data.projected[k])?data.projected[k]:data.kpis[k];
+    if(data.goalPct&&data.goalPct[k]!==undefined) applyPill('pill-'+k,data.goalPct[k]);
+    document.getElementById('g-'+k).innerText=data.kpis[k];
+    applyQoQ('gb-'+k,data.goals[k]);
+  });
+  buildAbvSection(data);
   var tbody=document.querySelector('#p-table tbody');
   tbody.innerHTML='';
-  monthly.forEach(function(r){
+  (data.properties||[]).forEach(function(p){
+    var sc=p.status==='STABLE'?'#4caf50':'#f5a623';
     var row=tbody.insertRow();
-    var occColor=r.occ>=0.90?'#22dd88':r.occ>=0.80?'#f5a623':'#ff5555';
-    var dscrColor=r.dscr>=1.25?'#22dd88':r.dscr>=1.0?'#f5a623':'#ff5555';
-    row.innerHTML='<td>'+r.month+'</td><td>'+fmtDollar(r.rent)+'</td><td>'+fmtDollar(r.vacancy)+'</td><td>'+fmtDollar(r.egi)+'</td><td>'+fmtDollar(r.opexp)+'</td><td>'+fmtDollar(r.noi)+'</td><td>'+fmtDollar(r.debtSvc)+'</td><td>'+fmtDollar(r.cash)+'</td><td style="color:'+occColor+';font-weight:700;">'+(r.occ*100).toFixed(1)+'%</td><td style="color:'+dscrColor+';font-weight:700;">'+r.dscr.toFixed(2)+'x</td>';
+    row.innerHTML='<td>'+p.name+'</td><td>'+p.occ+'</td><td>'+p.noi+'</td><td>'+p.dscr+'</td><td>'+p.rent+'</td><td>'+p.cash+'</td><td>'+p.cap+'</td><td style="color:'+sc+';font-weight:700;">'+p.status+'</td>';
   });
-}
-
-function processCSV(csvText){
-  var rows = parseCSV(csvText);
-  // ── KPI Summary (rows index 3-8, 0-indexed, cols B=1, C=2, D=3)
-  var kpis={}, budgets={};
-  var kpiMap={3:'noi',4:'dscr',5:'occ',6:'cash',7:'rev',8:'net'};
-  Object.keys(kpiMap).forEach(function(ri){
-    var key=kpiMap[ri];
-    var row=rows[ri]||[];
-    kpis[key]=n(row[2]);
-    budgets[key]=n(row[3]);
-  });
-
-  // ── Monthly series (rows index 12-23, cols: B=1 month, C=2 rent, D=3 vac, E=4 egi, F=5 opexp, G=6 noi, H=7 debtSvc, I=8 cash, J=9 occ, K=10 dscr)
-  var monthly=[];
-  for(var ri=12;ri<=23;ri++){
-    var row=rows[ri];
-    if(!row||!row[1]) continue;
-    monthly.push({
-      month:   row[1],
-      rent:    n(row[2]),
-      vacancy: n(row[3]),
-      egi:     n(row[4]),
-      opexp:   n(row[5]),
-      noi:     n(row[6]),
-      debtSvc: n(row[7]),
-      cash:    n(row[8]),
-      occ:     n(row[9]),
-      dscr:    n(row[10])
-    });
-  }
-
-  return {kpis:kpis, budgets:budgets, monthly:monthly};
-}
-
-function renderDashboard(d){
-  var kpis=d.kpis, budgets=d.budgets, monthly=d.monthly;
-
-  // Header
-  document.title = CLIENT_NAME + ' — Vector Core Dashboard';
-  document.getElementById('kpi-section-label').innerText='KEY PERFORMANCE INDICATORS — '+CLIENT_NAME;
-
-  // KPI cards
-  document.getElementById('py-noi').innerText  = fmtDollar(kpis.noi);
-  document.getElementById('py-dscr').innerText = kpis.dscr.toFixed(2)+'x';
-  document.getElementById('py-occ').innerText  = (kpis.occ*100).toFixed(1)+'%';
-  document.getElementById('py-cash').innerText = fmtDollar(kpis.cash);
-  document.getElementById('py-rev').innerText  = fmtDollar(kpis.rev);
-  document.getElementById('py-net').innerText  = fmtDollar(kpis.net);
-
-  applyPill('pill-noi',  kpis.noi,  budgets.noi);
-  applyPill('pill-dscr', kpis.dscr, budgets.dscr);
-  applyPill('pill-occ',  kpis.occ,  budgets.occ);
-  applyPill('pill-cash', kpis.cash, budgets.cash);
-  applyPill('pill-rev',  kpis.rev,  budgets.rev);
-  applyPill('pill-net',  kpis.net,  budgets.net);
-
-  // Gauges
-  document.getElementById('g-noi').innerText  = fmtK(kpis.noi);
-  document.getElementById('g-dscr').innerText = kpis.dscr.toFixed(2)+'x';
-  document.getElementById('g-occ').innerText  = (kpis.occ*100).toFixed(1)+'%';
-  document.getElementById('g-cash').innerText = fmtK(kpis.cash);
-  document.getElementById('g-rev').innerText  = fmtK(kpis.rev);
-  document.getElementById('g-net').innerText  = fmtK(kpis.net);
-
-  applyVsBadge('gb-noi',  kpis.noi,  budgets.noi,  'vs Budget');
-  applyVsBadge('gb-dscr', kpis.dscr, 1.25,          'vs 1.25x');
-  applyVsBadge('gb-occ',  kpis.occ,  0.95,          'vs 95%');
-  applyVsBadge('gb-cash', kpis.cash, budgets.cash,  'vs Budget');
-  applyVsBadge('gb-rev',  kpis.rev,  budgets.rev,   'vs Budget');
-  applyVsBadge('gb-net',  kpis.net,  budgets.net,   'vs Budget');
-
-  buildAbvSection(kpis, budgets);
-  buildCharts(monthly, kpis);
-  buildMonthlyTable(monthly);
-  buildInsights(kpis, budgets, monthly);
-
+  buildCharts(data);
+  buildInsights(data);
   document.getElementById('loading-overlay').classList.add('hidden');
 }
 
 window.onload = function(){
-  if(!SHEET_CSV_URL || SHEET_CSV_URL.indexOf('PASTE_YOUR') !== -1){
+  if(!SCRIPT_URL || SCRIPT_URL.indexOf('Paste_') !== -1){
     document.getElementById('loading-overlay').classList.add('hidden');
     var banner=document.getElementById('error-banner');
     banner.style.display='block';
-    banner.innerText='⚙️ Setup needed: Open this file in a text editor and fill in CLIENT_NAME and SHEET_CSV_URL at the top of the script. See the green instructions panel above.';
+    banner.innerText='⚙️ Setup needed: Fill in CLIENT_NAME and SCRIPT_URL at the top of the script.';
     return;
   }
-
-  // Try multiple CORS proxies in sequence — if one is down, the next is used automatically
-  var proxies = [
-    'https://corsproxy.io/?' + encodeURIComponent(SHEET_CSV_URL),
-    'https://api.allorigins.win/raw?url=' + encodeURIComponent(SHEET_CSV_URL),
-    'https://api.codetabs.com/v1/proxy?quest=' + encodeURIComponent(SHEET_CSV_URL)
-  ];
-
-  function tryProxy(index) {
-    if (index >= proxies.length) {
-      document.getElementById('loading-overlay').classList.add('hidden');
-      var banner = document.getElementById('error-banner');
-      banner.style.display = 'block';
-      banner.innerText = '⚠ Could not load data from Google Sheets. Make sure the sheet is published to web (File → Share → Publish to web) and your CSV link is correct.';
-      return;
-    }
-    fetch(proxies[index])
-      .then(function(res) {
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        return res.text();
-      })
-      .then(function(csvText) {
-        if (!csvText || csvText.trim().length < 10) throw new Error('Empty response');
-        var d = processCSV(csvText);
-        renderDashboard(d);
-      })
-      .catch(function() {
-        tryProxy(index + 1);
-      });
-  }
-
-  tryProxy(0);
+  fetch(SCRIPT_URL)
+    .then(function(res){
+      if(!res.ok) throw new Error('HTTP '+res.status);
+      return res.json();
+    })
+    .then(function(data){
+      renderDashboard(data);
+    })
+    .catch(function(err){
+      if(typeof google!=='undefined'&&google.script){
+        google.script.run
+          .withSuccessHandler(renderDashboard)
+          .withFailureHandler(function(e){renderDashboard({error:e.message||String(e)});})
+          .getLiveDashboardData();
+      } else {
+        renderDashboard({error:'Fetch failed: '+err.message+'. Check SCRIPT_URL at top of file.'});
+      }
+    });
 };
 </script>
 </body>
